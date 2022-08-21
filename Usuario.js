@@ -53,6 +53,9 @@ let nombre = "Matias",
             autor: "Isaac Asimov"
         }
     ]
+
+
+    
 const usuarioMatias = new Usuario(nombre,apellido,libro,mascota);
 
 console.log(usuarioMatias);
