@@ -39,37 +39,4 @@ class Usuario {
 
 
 
-// Prueba de Usuario.
-let nombre = "Matias",
-    apellido = "Ramoa",
-    mascota = ["Olivia","Canela","Dona","Apolo","Zeus","Max"];
-    libro = [
-        {
-            nombre: "El señor de las moscas",
-            autor: "William Golding"
-        },
-        {
-            nombre: "Fundacion",
-            autor: "Isaac Asimov"
-        }
-    ]
-
-
-    
-const usuarioMatias = new Usuario(nombre,apellido,libro,mascota);
-
-console.log(usuarioMatias);
-console.log();
-console.log("Nombre completo Usuario: ",usuarioMatias.getFullName());
-console.log("Cantidad de Mascotas: ",usuarioMatias.countMascotas());
-console.log("Lista de libros: ",usuarioMatias.getBookName());
-
-//Agregamos nuevas mascotas 
-usuarioMatias.addMascota("Luna");
-usuarioMatias.addMascota("Lula");
-console.log("Cantidad de Mascotas actualizado : ",usuarioMatias.countMascotas());
-
-//Agregamos dos libro
-usuarioMatias.addBook("Harry Potter y la Piedra Filosofal","Joanne Rowling");
-usuarioMatias.addBook("Animales fantásticos y dónde encontrarlos","Joanne Rowling");
-console.log("Lista de libros actualizada: ",usuarioMatias.getBookName());
+module.exports = Usuario;
