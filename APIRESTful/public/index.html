@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Asap:wght@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./css/style.css">
+    <title>Carga de Productos</title>
+</head>
+
+<body>
+    <div class="contenedorCargaProducto">
+        <h1>Cargar Producto</h1>
+        <form action="/api/productos" method="post" class="formularioCarga">
+            <div class="group">
+                <input required="" type="text" class="input" name="titulo" autocomplete="off">
+                <span class="bar"></span>
+                <label>Nombre</label>
+            </div>
+    
+            <div class="group">
+                <input required=""  type="number" class="input" name="precio" autocomplete="off">
+                <span class="bar"></span>
+                <label>Precio</label>
+            </div>
+    
+            <div class="group">
+                <input required="" type="text" class="input" name="url" autocomplete="off">
+                <span class="bar"></span>
+                <label>Url Imagen</label>
+            </div>
+            <input type="submit" value="Agregar Producto" class="btn">
+        </form>
+    </div>
+   
+</body>
+
+</html>

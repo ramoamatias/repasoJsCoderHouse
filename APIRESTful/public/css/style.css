@@ -1,0 +1,108 @@
+.group {
+    position: relative;
+    height: 80px;
+}
+
+.input {
+    font-size: 16px;
+    padding: 10px 10px 10px 5px;
+    display: block;
+    width: 300px;
+    border: none;
+    border-bottom: 1px solid #515151;
+    background: transparent;
+}
+
+.input:focus {
+    outline: none;
+}
+
+label {
+    color: #999;
+    font-size: 18px;
+    font-weight: normal;
+    position: absolute;
+    pointer-events: none;
+    left: 5px;
+    top: 50px;
+    transition: 0.2s ease all;
+}
+
+.input:focus~label,
+.input:valid~label {
+    top: 30px;
+    font-size: 14px;
+    color: #5264AE;
+}
+
+.bar {
+    position: relative;
+    display: block;
+}
+
+.bar:before,
+.bar:after {
+    content: '';
+    height: 3px;
+    width: 0;
+    top: -40px;
+    position: absolute;
+    background: #5264AE;
+    transition: 0.2s ease all;
+}
+
+.bar:before {
+    left: 50%;
+}
+
+.bar:after {
+    right: 50%;
+}
+
+.input:focus~.bar:before,
+.input:focus~.bar:after {
+    width: 50%;
+}
+* {
+    font-family: 'Asap', sans-serif;
+}
+
+.contenedorCargaProducto {
+    width: 500px;
+    margin: 50px auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    border: 2px solid #5264AE;
+    box-shadow: 10px 10px 5px  #404e7e67;
+}
+
+.formularioCarga {
+    width: 400px;
+    height: 300px;
+    border-radius: 10px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+input{
+    margin: 40px 0;
+}
+.btn{
+    background-color:#5264AE;
+    color: white;
+    padding: 10px;
+    border: 2px solid #5264AE;
+    border-radius: 10px;
+}
+
+.btn:hover {
+    color: #5264AE;
+    border: 2px solid #5264AE;
+    background-color: white;
+}
