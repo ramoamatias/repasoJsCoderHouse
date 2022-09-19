@@ -1,0 +1,15 @@
+if listProducts.length === 0 
+    h4(class="alert alert-danger") No products found 
+else 
+    table(class="table table-hover align-middle") 
+        tr(class="table-primary")
+            th(class="h3") Name 
+            th(class="h3") Price
+            th(class="h3") Photo
+            
+        each product in listProducts
+            tr 
+                td(class="h4") #{product.name}
+                td(class="h4") $ #{product.price}
+                td(class="h4") 
+                    img(src=product.urlPhoto , alt=product.name, style="width:50px ;")

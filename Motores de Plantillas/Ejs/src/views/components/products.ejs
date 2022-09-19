@@ -1,0 +1,20 @@
+<% if (listProducts.length === 0) {%>
+    <h4 class="alert alert-danger"> No products found. </h4>
+<% } else { %>
+    <table class="table table-hover align-middle">
+        <tr class="table-primary">
+            <th class="h3">Name</th>
+            <th class="h3">Price</th>
+            <th class="h3">Photo</th>
+        </tr>
+        <% listProducts.forEach(product => { %>
+            <tr>
+                <td class="h4"><%= product.name %></td>
+                <td class="h4"> $ <%= product.price %></td>
+                <td class="h4">
+                    <img src=<%=product.urlPhoto%> alt=<%=product.name%> style="width:50px ;" >
+                </td>
+            </tr>    
+        <% }); %>
+    </table>
+<% } %>

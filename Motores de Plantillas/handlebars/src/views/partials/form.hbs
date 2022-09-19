@@ -1,0 +1,31 @@
+<div class="container-md">
+
+<form action="/products" method="post" class="row g-3 was-validated border border-1 rounded shadow mt-2 p-2" >
+<div class="mb-6 ">
+    <label for="name" class="form-label" >Name: </label> 
+    <input type="text" class="form-control" name="name" id="name" required >
+    <div class="invalid-feedback">
+      Please enter in name the product.
+    </div>
+</div>
+<div class="mb-12 ">
+    <label for="price" class="form-label" >Price: </label>
+    <input type="number" class="form-control" name="price" id="price" required>
+    <div class="invalid-feedback">
+      Please enter in price the product.
+    </div>
+</div>
+<div class="mb-12 ">
+    <label for="urlPhoto" class="form-label">Url Photo: </label>
+    <input type="text" class="form-control" name="urlPhoto" id="urlPhoto" required>
+    <div class="invalid-feedback">
+      Please enter url the product.
+    </div>
+</div>
+<div class="mb-12">
+    <input type="submit" value="Send" class="btn btn-outline-primary mx-auto">
+</div>
+</form>
+
+
+</div>

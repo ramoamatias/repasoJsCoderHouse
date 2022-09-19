@@ -4,8 +4,14 @@ class Contenedor {
 
   constructor(nombreArchivo) {
     this.nombreArchivo = nombreArchivo;
-    this.listaObjetos = [];
     this.idObjeto = this.maxid();
+    if (this.isExiste()) {
+      this.getAll().then(res => this.listaObjetos = res);
+    } else {
+      this.listaObjetos = [];
+      fs.promises.writeFile(this.nombreArchivo, JSON.stringify(this.listaObjetos));
+    }
+
   }
 
   // Funcion que devuelve verdadero si existe el archivo y falso si no existe.
