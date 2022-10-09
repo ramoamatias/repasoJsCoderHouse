@@ -1,0 +1,17 @@
+<div class="form__container">
+  <table id="tableProducts"  class="table table-hover align-middle">
+      <tr class="table-primary">
+          <th class="h3">Name</th>
+          <th class="h3">Price</th>
+          <th class="h3">Photo</th>
+      </tr>
+      {{#each arrayProducts}}
+          <tr>
+              <td class="h4">{{this.name}}</td>
+              <td class="h4">$ {{this.price}}</td>
+              <td><img src={{this.urlPhoto}} alt={{this.name}} style="width:50px ;"></td>
+          </tr>
+      {{/each}}
+  </table>
+
+</div>
