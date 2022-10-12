@@ -1,5 +1,7 @@
-const { db } = require("../dbConfig.js");
+const knex = require("knex");
+const {configSQLite} = require("../dbConfig.js");
 
+const db = knex(configSQLite);
 (async () => {
     try {
         const isExist = await db.schema.hasTable("messages");

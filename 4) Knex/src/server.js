@@ -5,15 +5,15 @@ const { Server: SocketServer } = require("socket.io");
 require("../db/models/messages.js");
 require("../db/models/products.js");
 
-const {config} = require("../db/dbConfig.js");
+const {configMySQL ,configSQLite } = require("../db/dbConfig.js");
 const productsRouter = require("../routes/products.js");
 const Container = require("./js/ContenedorKnex.js");
 
 const app = express();
 const httpServer = http.createServer(app);
 const socketServer = new SocketServer(httpServer);
-const dbMessage = new Container(config,"messages");
-const dbProducts = new Container(config,"products");
+const dbMessage = new Container(configSQLite,"messages");
+const dbProducts = new Container(configMySQL,"products");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

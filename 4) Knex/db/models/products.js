@@ -1,5 +1,7 @@
-const { db } = require("../dbConfig.js");
+const knex = require("knex");
+const {configMySQL} = require("../dbConfig.js");
 
+const db = knex(configMySQL);
 (async () => {
     try {
         const isExist = await db.schema.hasTable("products");
