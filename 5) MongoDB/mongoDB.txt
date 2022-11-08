@@ -1,0 +1,217 @@
+-- Mongo Version Used 6.0
+
+
+-------------------------------------------[Inserting documents]-----------------------------------------------------------
+-- Colections Products and Insertions.
+
+db.products.insertMany(
+[{
+    name: "Hamburguesa",
+    price: 120,
+    urlPhoto:"https://cdn3.iconfinder.com/data/icons/street-food-and-food-trucker-1/64/hamburger-fast-food-patty-bread-128.png",
+    id: 1,
+  },
+  {
+    name: "Pizza",
+    price: 580,
+    urlPhoto: "https://cdn3.iconfinder.com/data/icons/street-food-and-food-trucker-1/64/pizza-fast-food-bake-bread-128.png",
+    id: 2,
+  },
+  {
+    name: "Ramen",
+    price: 900,
+    urlPhoto: "https://cdn3.iconfinder.com/data/icons/street-food-and-food-trucker-1/64/rice-dish-food-cook-menu-128.png",
+    id: 3,
+  },
+  {
+    name: "Tacos",
+    price: 1280,
+    urlPhoto: "https://cdn3.iconfinder.com/data/icons/street-food-and-food-trucker-1/64/sausage-burger-bread-breakfast-food-128.png",
+    id: 4,
+  },
+  {
+    name: "Batidos",
+    price: 1700,
+    urlPhoto: "https://cdn3.iconfinder.com/data/icons/street-food-and-food-trucker-1/64/beverage-juice-refreshment-soft-drink_-128.png",
+    id: 5,
+  },
+  {
+    name: "Patas De Pollo Fritas",
+    price: 2300,
+    urlPhoto: "https://cdn3.iconfinder.com/data/icons/street-food-and-food-trucker-1/64/fried-chicken-thigh-fast-food-128.png",
+    id: 6,
+  },
+  {
+    name: "Langosta",
+    price: 2860,
+    urlPhoto: "https://cdn3.iconfinder.com/data/icons/street-food-and-food-trucker-1/64/shrimp-prawn-seafood-animal-marine-128.png",
+    id: 7,
+  },
+  {
+    name: "Papas Fritas",
+    price: 3350,
+    urlPhoto: "https://cdn3.iconfinder.com/data/icons/street-food-and-food-trucker-1/64/french-fries-snacks-fast-food-128.png",
+    id: 8,
+  },
+  {
+    name: "Maiz",
+    price: 4320,
+    urlPhoto: "https://cdn3.iconfinder.com/data/icons/street-food-and-food-trucker-1/64/grilled-corn-vegetable-organic-plant-128.png",
+    id: 9,
+  },
+  {
+    name: "Donuts",
+    price: 4990,
+    urlPhoto: "https://cdn3.iconfinder.com/data/icons/food-set-3/91/Food_C228-512.png",
+    id: 10,
+  }
+  
+ ]);
+
+-- Colections Messages and Insertions.
+
+db.messages.insertMany(
+[
+  {
+    user: "matias.ramoa@gmail.com",
+    message: "Hola estoy probando el chat, prueba 1",
+    time: "27/9/2022, 20:52:17",
+    id: 1,
+  },
+  {
+    user: "Nahuel.Ramoa@gmail.com",
+    message: "Prueba  1 Aceptada",
+    time: "27/9/2022, 20:52:35",
+    id: 2,
+  },
+  {
+    user: "matias.ramoa@gmail.com",
+    message: "Hola estoy probando el chat, prueba 2",
+    time: "27/9/2022, 20:53:17",
+    id: 3,
+  },
+  {
+    user: "Nahuel.Ramoa@gmail.com",
+    message: "Prueba 2 Aceptada",
+    time: "27/9/2022, 20:53:35",
+    id: 4,
+  },
+  {
+    user: "matias.ramoa@gmail.com",
+    message: "Hola estoy probando el chat, prueba 3",
+    time: "27/9/2022, 20:54:17",
+    id: 5,
+  },
+  {
+    user: "Nahuel.Ramoa@gmail.com",
+    message: "Prueba 3 Aceptada",
+    time: "27/9/2022, 20:54:35",
+    id: 6,
+  },
+  {
+    user: "matias.ramoa@gmail.com",
+    message: "Hola estoy probando el chat, prueba 4",
+    time: "27/9/2022, 20:55:17",
+    id: 7,
+  },
+  {
+    user: "Nahuel.Ramoa@gmail.com",
+    message: "Prueba 4 Aceptada",
+    time: "27/9/2022, 20:55:35",
+    id: 8,
+  },
+  {
+    user: "matias.ramoa@gmail.com",
+    message: "Hola estoy probando el chat, prueba 5",
+    time: "27/9/2022, 20:56:17",
+    id: 9,
+  },
+  {
+    user: "Nahuel.Ramoa@gmail.com",
+    message: "Prueba 5 Aceptada",
+    time: "27/9/2022, 20:57:35",
+    id: 10,
+  }
+]);
+
+
+-------------------------------------------[List Documents]----------------------------------------------------------------
+-- List All Products
+db.products.find().pretty();
+
+-- List All Messages
+db.messages.find().pretty();
+
+-------------------------------------------[Count Documents]---------------------------------------------------------------
+-- Count documents in Products
+db.products.count()
+
+-- Count documents in Messages
+db.messages.count()
+
+
+-------------------------------------------[CRUD in collection products]---------------------------------------------------
+a) db.products.insertOne({
+    name:"Lemonade",
+    price:"66",
+    urlPhoto:"https://cdn3.iconfinder.com/data/icons/street-food-and-food-trucker-1/64/smoothie-truck-juice-bar-fruit-128.png",
+    id:11}
+   );
+
+b)
+ I) db.products.find({
+   		price: {$lte:1000}
+	})
+
+
+
+
+
+ II) db.products.find({
+      $and: [
+             {price:{$gte:1000}},
+             {price:{$lte:3000}}
+            ]
+      })
+
+
+ III) db.products.find({
+ 	   price: {$gte:3000}
+       })
+
+ IV) db.products.find().sort({price:1}).skip(2).limit(1)
+
+
+c) db.products.updateMany(
+	{},
+	{
+  	  	$set: {"stock":100}
+	})
+
+d) db.products.updateMany(
+	{
+	    price:{$gt:4000}
+	},
+	{
+	    $set: {"stock":0}
+	})
+
+
+e) db.products.deleteMany({
+  	  price:{$lt:1000}
+	})
+ 
+
+-------------------------------------------[Roles in User]---------------------------------------------------------
+use admin
+db.createUser({ 
+   "user": "pepe",
+   "pwd": "asd456", 
+   "roles": [ { role: "read", db: "ecommerce" }] 
+})
+
+
+
+
+
+
