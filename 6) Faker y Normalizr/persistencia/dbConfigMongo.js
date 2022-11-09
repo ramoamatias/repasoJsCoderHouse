@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 function connectMongoDB() {
-  const URL = "mongodb+srv://matiasramoa:coderhouse@coderhouse.ocw4cfm.mongodb.net/test";
+  const URL = "mongodb+srv://matiasramoa:coderhouse@coderhouse.ocw4cfm.mongodb.net/chat";
   mongoose.connect(URL);
 }   
 

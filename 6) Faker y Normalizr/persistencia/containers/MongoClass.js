@@ -6,12 +6,19 @@ class MongoClass {
 
    getAll() {
         try {
-            return this.collection.find({},{author:1,text:1,time:1});
+            return this.collection.find({});
         } catch (error) {
             console.log(error);
         }
     }
-    
+
+    getAllByProjection(obj) {
+        try {
+            return this.collection.find({},obj);
+        } catch (error) {
+            console.log(error);
+        }
+    } 
  
     save(obj) {
         try {

@@ -4,7 +4,7 @@ const nameCollection = "message";
 
 const productsSchema = mongoose.Schema({
   author: {
-    id: { type: String, required: true }, //mail from user
+    email: { type: String, required: true }, //mail from user
     firstName: { type: String, required: true }, //firstName from user
     lastName: { type: String, required: true }, //lastName from user
     age: { type: Number, required: true }, //age from user

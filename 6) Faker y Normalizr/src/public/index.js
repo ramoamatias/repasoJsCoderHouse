@@ -17,7 +17,7 @@ $formChat.addEventListener("submit",e => {
     e.preventDefault();
 
     const author = {
-        id : $email.value, 
+        email : $email.value, 
         firstName : $firstName.value,
         lastName : $lastName.value,
         age : $age.value,
@@ -29,24 +29,45 @@ $formChat.addEventListener("submit",e => {
     const time = today.toLocaleString();
     const data = { author, text, time }
 
-    if (author.id && text) {
+    if (author.email && text) {
         socketClient.emit("message", data);
     }
     $messageUser.value = "";
     $formData.style.display = "none";
 });
 
-socketClient.on("loadMessages",listMessages => {
+const authorEntity = new normalizr.schema.Entity(
+    "author",
+    {},
+    { idAttribute: "email" }
+  );
 
-    const chats = listMessages.map((message) => {
+  const messageEntity = new normalizr.schema.Entity(
+    "message",
+    {
+      author: authorEntity,
+    },
+    { idAttribute: "_id" }
+  );
+
+  const messagesEntity = new normalizr.schema.Entity("messages", {
+    messages: [messageEntity],
+  });
+socketClient.on("loadMessages",listMessages => {
+    console.log(listMessages,"Lista de Mensajes Normalize");
+
+    let result= normalizr.denormalize(listMessages.result,messagesEntity,listMessages.entities);
+    console.log(JSON.stringify(listMessages).length);  
+    console.log(JSON.stringify(result).length); 
+  console.log("Denomalizado",result);
+    const chats = result.messages.map((message) => {
         return `    <li>
                         <div class="mensajeContainer">
                             <div class="nick">
-                                <span style="color: blue">${message.user}</span> <span style="color: brown">[${message.time}]:</span><span style="color: green">${message.message}</span>
+                                <span style="color: blue">${message.author.email}</span> <span style="color: brown">[${message.time}]:</span><span style="color: green">${message.text}</span> <img src="${message.author.avatar}" style="width:70px; border-radius:50px" alt="avatarUsuario ${message.author.email}">
                             </div>
                         </div>
                     </li>`;
-
     }).join(" ");
     $listMessages.innerHTML = chats;
 
@@ -54,6 +75,4 @@ socketClient.on("loadMessages",listMessages => {
         top: $listMessages.scrollTop,
         behavior: 'smooth'
     });
-
-
 })
