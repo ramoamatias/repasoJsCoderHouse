@@ -1,0 +1,27 @@
+
+{{#if user}}
+<div >
+    {{>bannerUser}}
+    <hr>
+    <div >
+        {{>form}}
+    </div>
+    <hr>
+    <div>
+        <h3>List Products </h3>
+        {{#if isProducts}}
+            {{>table}}
+        {{else}}
+            <h4 class="alert alert-danger"> No products found </h4>
+        {{/if}}
+    </div>
+    <hr>
+    <div>
+        {{>chat}}
+    </div>
+</div>
+{{else}}
+    {{>login}}
+{{/if}}
+
+
