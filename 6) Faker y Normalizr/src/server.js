@@ -1,6 +1,5 @@
 const express = require("express");
 const hbs = require("express-handlebars");
-const {faker} = require("@faker-js/faker");
 const http = require("http");
 const { Server: SocketServer } = require("socket.io");
 const { connectMongoDB } = require("../persistencia/dbConfigMongo.js");
