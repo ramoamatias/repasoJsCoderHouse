@@ -3,13 +3,6 @@ const $formSubmitProduct = document.getElementById("submitProduct");
 const $tableProducts = document.getElementById("tableProducts");
 
 const $formChat = document.getElementById("formChat");
-const $formData = document.getElementById("formData");
-const $email = document.getElementById("email");
-const $firstName = document.getElementById("firstName");
-const $lastName = document.getElementById("lastName");
-const $age = document.getElementById("age");
-const $alias = document.getElementById("alias");
-const $avatar = document.getElementById("avatar");
 const $messageUser = document.getElementById("messageUser");
 const $listMessages = document.getElementById("listMessages");
 
@@ -39,24 +32,15 @@ socketClient.on("loadProducts",listProducts => {
 $formChat.addEventListener("submit",e => {
     e.preventDefault();
     
-    const author = {
-        email : $email.value, 
-        firstName : $firstName.value,
-        lastName : $lastName.value,
-        age : $age.value,
-        alias : $alias.value,
-        avatar : $avatar.value,
-    }   
     const text = $messageUser.value;
     const today = new Date();
     const time = today.toLocaleString();
-    const data = { author, text, time }
+    const data = { text, time }
 
-    if (author.email && text) {
+    if (text) {
         socketClient.emit("message", data);
     }
     $messageUser.value = "";
-    $formData.style.display = "none";
 });
 
 
@@ -98,8 +82,9 @@ socketClient.on("loadMessages",listMessages => {
     $listMessages.innerHTML = chats;
 
     $listMessages.scroll({
-        top: $listMessages.scrollTop,
+        bottom: 0,
         behavior: 'smooth'
     });
 
+    
 })

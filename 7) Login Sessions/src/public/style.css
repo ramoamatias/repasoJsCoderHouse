@@ -1,8 +1,8 @@
-#formData, #formChat {
+.formRegister, #formChat {
     width: 600px;
     margin: 0 auto;
 }
-#formData label {
+.formRegister label {
     display: flex;
     flex-direction: column;
     margin: 10px 0;

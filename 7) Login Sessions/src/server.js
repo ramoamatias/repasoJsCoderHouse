@@ -15,7 +15,6 @@ const session = require("express-session");
 const MongoStore = require("connect-mongo");
 
 const productsRouter = require("../routes/products.js");
-const { emitWarning } = require("process");
 
 const app = express();
 const httpServer = http.createServer(app);
@@ -28,18 +27,21 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname + "/public"));
 app.use("/products", productsRouter);
-app.use(
-  session({
-    secret: "ClaveSecreta123",
-    resave: true,
-    saveUninitialized: false,
-    store: MongoStore.create({
-      mongoUrl:
-        "mongodb+srv://matiasramoa:coderhouse@coderhouse.ocw4cfm.mongodb.net/session",
-    }),
-    cookie: { maxAge: 60000 * 10 },
-  })
-);
+const sess = session({
+  secret: "ClaveSecreta123",
+  resave: true,
+  saveUninitialized: false,
+  store: MongoStore.create({
+    mongoUrl:
+      "mongodb+srv://matiasramoa:coderhouse@coderhouse.ocw4cfm.mongodb.net/session",
+  }),
+  cookie: { maxAge: 60000 * 10 },
+});
+app.use(sess);
+
+const sharedsession = require("express-socket.io-session");
+
+socketServer.use(sharedsession(sess));
 
 app.engine(
   "hbs",
@@ -54,7 +56,11 @@ app.engine(
 app.set("views", "./views");
 app.set("view engine", "hbs");
 
+let datosUsuarios;
+
 app.get("/", (req, res) => {
+  datosUsuarios = req.session;
+  console.log(datosUsuarios);
   dbProducts.getAll().then((arrayProducts) => {
     const array = {
       products: arrayProducts.map((document) => {
@@ -66,24 +72,33 @@ app.get("/", (req, res) => {
       }),
     };
 
-    console.log(array.products);
     res.render("index", {
       isProducts: array.products.length > 0,
       arrayProducts: array.products,
-      user: req.session.name,
+      user: req.session.firstName,
+      imgRute: req.session.avatar,
     });
   });
 });
 
 app.post("/login", async (req, res) => {
-  const { name, password } = req.body;
-  const user = await dbUsers.getByFilter({ name, password });
+  const { email, password } = req.body;
+  const user = await dbUsers.getByFilter({ email, password });
   console.log(user);
   if (user.length > 0) {
-    req.session.name = name;
+    datosUsuarios = req.session;
+    const userData = user[0];
+    req.session.email = userData.email;
+    req.session.firstName = userData.firstName;
+    req.session.lastName = userData.lastName;
+    req.session.age = userData.age;
+    req.session.avatar = userData.avatar;
+    req.session.alias = userData.alias;
+    req.session.password = userData.email;
+    console.log(datosUsuarios);
     res.redirect("/");
   } else {
-    res.send("Herror usuario o contrasñea no existe");
+    res.send("Error usuario o contrasñea no existe");
   }
 });
 
@@ -101,18 +116,16 @@ app.post("/register", (req, res) => {
 });
 
 app.get("/logout", (req, res) => {
-  const userLogout = req.session.name;
+  const userLogout = req.session.firstName;
   req.session.destroy((err) => {
     if (!err) {
-      console.log("dentro de la session eliminada");
-
-      return res.redirect("/").send(`Chay usuario ${userLogout}  `);
+      res.render("logoutPage", { user: userLogout });
     }
   });
 });
 
 socketServer.on("connection", (client) => {
-  // console.log("Usuario conectado:", client.id);
+  console.log(client.handshake);
   client.on("updateProducts", () => {
     setTimeout(() => {
       dbProducts
@@ -128,9 +141,11 @@ socketServer.on("connection", (client) => {
     .then((listMessages) => socketServer.emit("loadMessages", listMessages));
 
   client.on("message", (message) => {
+    const { email, firstName, lastName, age, avatar, alias } =
+      client.handshake.session;
+    message.author = { email, firstName, lastName, age, avatar, alias };
     dbMessage.save(message).then(() => {
       dbMessage.getByNormalize().then((listMessages) => {
-        console.log("Load mensajes");
         socketServer.sockets.emit("loadMessages", listMessages);
       });
     });
