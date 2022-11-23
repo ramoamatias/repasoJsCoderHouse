@@ -1,0 +1,43 @@
+
+<div>
+    <h2>Register </h2>
+    <form action="/user/register" method="post" class="formRegister">
+            <label>
+            Email:
+            <input type="email" name="email" id="email" required="true">
+            </label>
+
+            <label>
+            First Name:
+            <input type="text" name="firstName" id="firstName" required="true" >
+            </label>
+
+            <label>
+            Last Name:
+            <input type="text" name="lastName" id="lastName" required="true">
+            </label>
+
+            <label>
+            Age:
+            <input type="number" name="age" id="age" required="true">
+            </label>
+
+            <label>
+            Alias:
+            <input type="text" name="alias" id="alias" required="true">
+            </label>
+
+            <label>
+            Avatar:
+            <input type="text" name="avatar" id="avatar" required="true">
+            </label>
+            
+            <label>
+            Password:
+            <input type="password" name="password" id="password" required="true">
+            </label>
+        
+        <input type="submit" value="Register">
+    </form>
+    <button onclick="location.href='/'"> login </button>
+</div>
