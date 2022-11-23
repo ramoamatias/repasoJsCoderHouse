@@ -36,13 +36,12 @@ router.get("/errorRegister", (req, res) => {
 });
 
 router.get("/errorLogin", (req, res) => {
-  console.log("DENTI EDK ERROR");
   res.render("pageError.hbs", { message: "error, invalid credentials" });
 });
 
 router.get("/logout", isAuth, (req, res) => {
   const userLogout = req.user.firstName;
-  req.logOut(res.render("logoutPage", { user: userLogout }));
+  req.logOut(()=> {res.render("logoutPage", { user: userLogout })});
 });
 
 module.exports = { router, isAuth };
