@@ -1,4 +1,5 @@
 const express = require("express");
+
 const hbs = require("express-handlebars");
 const http = require("http");
 const { Server: SocketServer } = require("socket.io");
@@ -10,7 +11,12 @@ const {
   ProductsMongoDAO,
 } = require("../persistencia/daos/productsMongoDAO.js");
 
+// Implement Passport
+const passport = require("passport");
+require("../passport/localPassport.js");
+const passportSocketIo = require("passport.socketio");
 
+const cookieParser = require("cookie-parser");
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
 
@@ -26,28 +32,36 @@ const dbProducts = new ProductsMongoDAO();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname + "/public"));
-app.use("/products", productsRouter);
-app.use("/user", userRouter);
 
-app.use(session({
+const mongoConnection = MongoStore.create({
+  mongoUrl:
+    "mongodb+srv://matiasramoa:coderhouse@coderhouse.ocw4cfm.mongodb.net/passportLocal",
+});
+
+app.use(cookieParser("ClaveSecreta123"));
+
+const sessionConfig = session({
   secret: "ClaveSecreta123",
   resave: true,
   saveUninitialized: true,
-  store: MongoStore.create({
-    mongoUrl:
-      "mongodb+srv://matiasramoa:coderhouse@coderhouse.ocw4cfm.mongodb.net/passportLocal",
-  }),
+  store: mongoConnection,
   cookie: { maxAge: 60000 * 10 },
-}));
+});
+app.use(sessionConfig);
 
-// const sharedsession = require("express-socket.io-session");
+socketServer.use(
+  passportSocketIo.authorize({
+    secret: "ClaveSecreta123",
+    store: mongoConnection,
+  })
+);
 
-// socketServer.use(sharedsession(sess));
-
-const passport = require("passport");
-require("../passport/localPassport.js");
+// IMPOIRTANTE DEBE DE ESTAR ANTES DE LA DEFINICION DE LAS RUTAS
 app.use(passport.initialize());
 app.use(passport.session());
+
+app.use("/products", productsRouter);
+app.use("/user", userRouter);
 
 app.engine(
   "hbs",
@@ -57,11 +71,11 @@ app.engine(
     extname: ".hbs",
     defaultLayout: "layoutIndex.hbs",
   })
-  );
-  
-  app.set("views", "./views");
-  app.set("view engine", "hbs");
-  
+);
+
+app.set("views", "./views");
+app.set("view engine", "hbs");
+
 app.get("/", isAuth, (req, res) => {
   dbProducts.getAll().then((arrayProducts) => {
     const array = {
@@ -73,7 +87,7 @@ app.get("/", isAuth, (req, res) => {
         };
       }),
     };
-    
+
     res.render("index.hbs", {
       isProducts: array.products.length > 0,
       arrayProducts: array.products,
@@ -83,35 +97,32 @@ app.get("/", isAuth, (req, res) => {
   });
 });
 
-
 socketServer.on("connection", (client) => {
-  // console.log(client.handshake);
-  // client.on("updateProducts", () => {
-  //   setTimeout(() => {
-  //     dbProducts
-  //       .getAll()
-  //       .then((listMessages) =>
-  //       socketServer.sockets.emit("loadProducts", listMessages)
-  //       );
-  //   }, 1000);
-  // });
+  client.on("updateProducts", () => {
+    setTimeout(() => {
+      dbProducts
+        .getAll()
+        .then((listMessages) =>
+          socketServer.sockets.emit("loadProducts", listMessages)
+        );
+    }, 1000);
+  });
 
-  // dbMessage
-  //   .getByNormalize()
-  //   .then((listMessages) => socketServer.emit("loadMessages", listMessages));
+  dbMessage
+    .getByNormalize()
+    .then((listMessages) => socketServer.emit("loadMessages", listMessages));
 
-  // client.on("message", (message) => {
-  //   const { email, firstName, lastName, age, avatar, alias } =
-  //     client.handshake.session;
-
-  //   // console.log(client.handshake);
-  //   message.author = { email, firstName, lastName, age, avatar, alias };
-  //   dbMessage.save(message).then(() => {
-  //     dbMessage.getByNormalize().then((listMessages) => {
-  //       socketServer.sockets.emit("loadMessages", listMessages);
-  //     });
-  //   });
-  // });
+  client.on("message", (message) => {
+    const { email, firstName, lastName, age, avatar, alias } =
+      client.request.user;
+      
+    message.author = { email, firstName, lastName, age, avatar, alias };
+    dbMessage.save(message).then(() => {
+      dbMessage.getByNormalize().then((listMessages) => {
+        socketServer.sockets.emit("loadMessages", listMessages);
+      });
+    });
+  });
 });
 
 const PORT = process.env.PORT || 8081;

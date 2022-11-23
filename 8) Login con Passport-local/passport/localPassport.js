@@ -13,7 +13,6 @@ passport.use(
     },
     async (req, email, password, done) => {
       const userDB = await modelUsers.findOne({ email });
-      console.log(userDB,"USUARIO RECUPERADO EN REGISTER");
       if (userDB) {
         return done(null, false);
       } else {
@@ -21,7 +20,6 @@ passport.use(
         for (const key in req.body) {
             user[key] = req.body[key];
           }
-        console.log("USUARIO",user);
         user.save();
         done(null, user);
       }
@@ -39,7 +37,6 @@ passport.use(
     },
     async (req, email, password, done) => {
       const userDB = await modelUsers.findOne({ email, password });
-      console.log(userDB,"USuARIO RECUPERADO EN LOGIN");
       if (!userDB) {
         done(null, false);
       }
