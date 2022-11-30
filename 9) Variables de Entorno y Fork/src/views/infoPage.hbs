@@ -1,0 +1,16 @@
+<h2>Informacion sobre procesos</h2>
+<ul>
+    <li><b>Argumentos de Entrada:</b>
+        <ul>
+         {{#each args}}
+            <li>{{this}}</li>
+         {{/each}}
+        </ul>
+    </li>
+    <li><b>Nombre de la plataforma (Sistema Operativo):</b>  {{nameSO}}</li>
+    <li><b>Version de Node: </b>  {{nodeVersion}}</li>
+    <li><b>Memoria total reservada: </b> {{memoryReserved}}</li>
+    <li><b>Path de Ejecucion: </b>  {{path}}</li>
+    <li><b>Id del Proceso: </b> {{processId}} </li>
+    <li><b>Directorio Actual: </b> {{folderProyect}}</li>
+</ul>
