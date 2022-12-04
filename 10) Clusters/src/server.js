@@ -3,8 +3,10 @@ const config = require("../config.js");
 
 const hbs = require("express-handlebars");
 const http = require("http");
-
 const { Server: SocketServer } = require("socket.io");
+const cluster = require("cluster");
+const os = require("os");
+
 const { connectMongoDB } = require("../persistencia/dbConfigMongo.js");
 const {
   MessagesMongoDAO,
@@ -12,7 +14,7 @@ const {
 const {
   ProductsMongoDAO,
 } = require("../persistencia/daos/productsMongoDAO.js");
-
+const numCPUs = os.cpus().length;
 // Implement Passport
 const passport = require("passport");
 require("../passport/localPassport.js");
@@ -32,7 +34,6 @@ const httpServer = http.createServer(app);
 const socketServer = new SocketServer(httpServer);
 const dbMessage = new MessagesMongoDAO();
 const dbProducts = new ProductsMongoDAO();
-
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -68,6 +69,7 @@ app.use("/products", productsRouter);
 app.use("/user", userRouter);
 app.use("/info", infoRouter);
 app.use("/api/randoms", routerRandom);
+
 
 app.engine(
   "hbs",
@@ -121,7 +123,7 @@ socketServer.on("connection", (client) => {
   client.on("message", (message) => {
     const { email, firstName, lastName, age, avatar, alias } =
       client.request.user;
-
+      
     message.author = { email, firstName, lastName, age, avatar, alias };
     dbMessage.save(message).then(() => {
       dbMessage.getByNormalize().then((listMessages) => {
@@ -131,16 +133,56 @@ socketServer.on("connection", (client) => {
   });
 });
 
+
+
+
+
+
+
+
 const PORT = config.PORT;
-try {
-  connectMongoDB();
-  console.log("Conectado a la Base de Datos Mongo");
-  httpServer.listen(PORT, () => {
-    console.log(`Escuchando el puerto ${PORT}`);
-    console.log(`http://localhost:${PORT}`);
-    console.log(`Escuchando el puerto ${PORT} - proceso ${process.pid}`);
-  });
-} catch (error) {
-  console.log(error);
+
+if (config.MODO === "cluster") {
+
+  if (cluster.isPrimary) {
+    console.log(`Proceso maestro - ${process.pid}`);
+
+    // Creamos los procesos que seran parte del cluster
+    for (let i = 0; i < numCPUs; i++) {
+      cluster.fork();
+    }
+
+    // Si por alguna razon muere el proceso, lo volvemos a levantar
+    cluster.on("exit", () => {
+      cluster.fork();
+    });
+  } else {
+    try {
+      connectMongoDB();
+      httpServer.listen(PORT, () => {
+        console.log(`Escuchando el puerto ${PORT} - proceso ${process.pid}`);
+      });
+    } catch (error) {
+        console.log(error);
+    }
+  }
+} else {
+  try {
+    connectMongoDB();
+    console.log("Conectado a la Base de Datos Mongo");
+    httpServer.listen(PORT, () => {
+      console.log(`Escuchando el puerto ${PORT}`);
+      console.log(`http://localhost:${PORT}`);
+    });
+  } catch (error) {
+    console.log(error);
+  }
 }
+
+
+
+
+
+
+
 
