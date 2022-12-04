@@ -1,0 +1,37 @@
+Para poder cambiar de numero de puerto
+> node server.js -p numeroNuevoPuerto
+
+Para iniciar el servidor en cluster 
+> node server.js -m cluster
+
+
+------------------------------[Usando Forever]------------------------------
+Para iniciar Forever con el servidor en modo cluster
+> forever start server.js -m cluster
+ en modo fork
+> forever start server.js
+
+Para listar los procesos
+> forever list
+
+
+------------------------------[Usando Forever]------------------------------
+para iniciar en modo fork
+> pm2 start server.js --name="ServidorFork" --watch -- 8080
+
+para iniciar en modo cluster
+> pm2 start server.js --name="ServidorCluster" --watch -i max -- 8080
+
+Para listar las aplicaciones que se ejecutan
+> pm2 list
+
+Configuramos el servidor para que distribuya la carga
+upstram node_app {
+    server 127.0.0.1:8081;
+    server 127.0.0.1:8082 weigth= 3;
+}
+
+prendemos el servidor en modo fork para un procesos
+> pm2 start server.js --name="ServidorFork" --watch -- 8081
+prendemos el servidor en modo clustes para el resto de los procesos
+> pm2 start server.js --name="ServidorCluster" --watch -i max -- 8082

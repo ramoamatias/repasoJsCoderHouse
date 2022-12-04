@@ -1,0 +1,11 @@
+[2022-12-04T20:46:24.513] [WARN] default - { rute: '/favicon.ico', method: 'GET' }
+[2022-12-04T20:46:26.832] [WARN] default - { rute: '/hjjh', method: 'GET' }
+[2022-12-04T20:46:27.283] [WARN] default - { rute: '/favicon.ico', method: 'GET' }
+[2022-12-04T20:46:41.512] [WARN] default - { rute: '/user/style.css', method: 'GET' }
+[2022-12-04T20:46:41.519] [WARN] default - { rute: '/user/index.js', method: 'GET' }
+[2022-12-04T20:46:42.639] [WARN] default - { rute: '/favicon.ico', method: 'GET' }
+[2022-12-04T20:47:01.480] [ERROR] default - { rute: '/user/errorRegister', method: 'GET' }
+[2022-12-04T20:47:01.686] [WARN] default - { rute: '/user/style.css', method: 'GET' }
+[2022-12-04T20:47:01.693] [WARN] default - { rute: '/user/index.js', method: 'GET' }
+[2022-12-04T20:47:02.287] [WARN] default - { rute: '/favicon.ico', method: 'GET' }
+[2022-12-04T20:47:13.052] [WARN] default - { rute: '/favicon.ico', method: 'GET' }
