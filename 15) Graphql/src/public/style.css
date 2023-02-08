@@ -1,0 +1,9 @@
+.formRegister, #formChat {
+    width: 600px;
+    margin: 0 auto;
+}
+.formRegister label {
+    display: flex;
+    flex-direction: column;
+    margin: 10px 0;
+}
